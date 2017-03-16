@@ -1,0 +1,9 @@
+- comments.each do |c|
+  - id = c.jira_id.nil? ? "comment-description" : "comment-#{c.jira_id}"
+  .comment id="#{id}"
+    .author
+      span = "##{c.internal_id} "
+      = c.author
+    .bookmark data-path=self.send("bookmark_comment_path", c.id) class = "#{c.bookmarked_by?(current_user) ? "bookmarked" : ""}"
+      == material_icon.bookmark
+    .body = sanitize(c.content)

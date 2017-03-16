@@ -1,0 +1,2 @@
+class PatchAuthor < ApplicationRecord
+end

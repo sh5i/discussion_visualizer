@@ -1,0 +1,25 @@
+.container
+  .row
+    h1 = link_to @issue.title, issue_path(@issue)
+
+  .row
+    table.table.table-striped
+      thead
+        tr
+          th ユーザー
+          th ツール生成辺数
+          th ユーザー辺数
+          th ツール and ユーザー
+          th presicison
+          th recall
+          th f-measure
+      tbody
+        - @results.each do |user, hash|
+          tr
+            td = link_to user.email, "/evaluations/issues/#{@issue.id}/users/#{user.id}"
+            td = hash[:positive_edge].size
+            td = hash[:true_edge].size
+            td = hash[:true_positive].size
+            td = hash[:precision]
+            td = hash[:recall]
+            td = hash[:f_measure]

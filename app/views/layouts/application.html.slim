@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    title
+      | DiscussionVisualizer
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => 'reloaded'
+    = javascript_include_tag 'application', 'data-turbolinks-track' => 'reloaded'
+    = csrf_meta_tags
+  body class="#{controller.controller_name}-#{controller.action_name}"
+    #header = render "/layouts/header"
+    #wrap
+      /#header = render "/layouts/header"
+      - if flash && (flash[:success] || flash[:error] || flash[:notice] || flash[:errors])
+        .container
+          = show_success(flash)
+          = show_error(flash)
+      - if notice
+        .container
+          .alert.alert-success.alert-dismissible = notice
+      - elsif alert
+        .container
+          .alert.alert-danger.alert-dismissible = alert
+      #main = yield

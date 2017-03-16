@@ -1,0 +1,9 @@
+= form_for @edge do |f|
+  - if @edge.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@edge.errors.count, "error")} prohibited this edge from being saved:"
+      ul
+        - @edge.errors.full_messages.each do |message|
+          li = message
+
+  .actions = f.submit

@@ -1,0 +1,2 @@
+module PatchAuthorsHelper
+end

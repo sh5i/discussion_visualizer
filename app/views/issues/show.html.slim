@@ -1,0 +1,32 @@
+h1 = @issue.title
+span.title = link_to @issue.url, target: "_blank" do
+  == material_icon.open_in_new.md_36
+
+.back = link_to '一覧に戻る', issues_path
+
+.left_area
+  .btn-group
+    .btn.btn-default id="ZoomIn"
+      == material_icon.zoom_in.css_class('align-middle')
+      | 拡大
+    .btn.btn-default id="ZoomOut"
+      == material_icon.zoom_out.css_class('align-middle')
+      | 縮小
+  .graph_area.dragscroll
+    = embedded_svg("#{current_user.id}_#{@issue.id}.svg")
+
+  .tag_area.panel-group
+    = render partial: "issues/tags", locals: {tags: @issue.tags.select(:content).uniq}
+
+.right_area
+  .btn-group
+    .btn.btn-default id="ShowComments"
+      == material_icon.remove_red_eye.css_class('align-middle')
+      | 全てのコメントを表示
+    .btn.btn-default id="ShowBookmarked"
+      == material_icon.bookmark.css_class('align-middle')
+      | ブックマークしたコメントを表示
+  .comments_area
+    = render partial: "issues/comments", locals: {comments: @issue.comments.order(:internal_id)}
+
+#popup_viewer

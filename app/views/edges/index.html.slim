@@ -1,0 +1,19 @@
+h1 Listing edges
+
+table
+  thead
+    tr
+      th
+      th
+      th
+
+  tbody
+    - @edges.each do |edge|
+      tr
+        td = link_to 'Show', edge
+        td = link_to 'Edit', edit_edge_path(edge)
+        td = link_to 'Destroy', edge, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Edge', new_edge_path

@@ -1,0 +1,9 @@
+.container
+  .row
+    h1 evaluations
+
+  .row
+    ul
+      - @issues.each do |issue|
+        /- issue.users.where.not(id: current_user).uniq(:id).each do |user|
+        li = link_to "#{issue.title}", "evaluations/issues/#{issue.id}"

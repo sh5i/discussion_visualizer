@@ -1,0 +1,16 @@
+.container
+  .row
+    h1 Issue新規登録
+
+  = form_for(@issue) do |f|
+    .row
+      .col-md-12 = f.label :url
+      .col-md-12 = f.text_field :url, style: "width:100%"
+
+    .pull-right.mt10
+      = f.submit class: "btn btn-primary"
+
+    /== render 'form'
+    .clearfix
+    .pull-right.mt10
+      = link_to 'Back', issues_path

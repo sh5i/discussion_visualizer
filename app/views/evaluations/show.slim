@@ -1,0 +1,27 @@
+.container
+  .row
+    h1 = link_to @issue.title, issue_path(@issue)
+
+  .row
+    table.table
+      thead
+        tr
+          th ツール生成辺数
+          th ユーザー辺数
+          th ツール and ユーザー
+          th recall
+          th presicison
+          th f-measure
+      tbody
+        tr
+          td = @positive_edge.size
+          td = @true_edge.size
+          td = @true_positive.size
+          td = @recall
+          td = @precision
+          td = @f_measure
+
+
+  .row
+    .graph_area.dragscroll
+      = embedded_svg("#{@user.id}_#{@issue.id}.svg")

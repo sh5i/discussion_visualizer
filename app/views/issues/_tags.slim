@@ -1,0 +1,8 @@
+.panel.panel-default
+  .panel-heading
+    .panel-title = "Tag一覧"
+  .panel-body.btn-area
+    - tags.each do |t|
+      .radio-button class=t.content
+        = radio_button_tag :tag, t.content
+        = label :t, t.content, value: t.content
