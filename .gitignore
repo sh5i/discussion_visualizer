@@ -28,3 +28,6 @@
 # Ignore SVG files
 /app/assets/svgs/*
 /public/images/*
+
+# Ignore .idea/*
+.idea/*
