@@ -1,21 +1,16 @@
-h1 Listing projects
+.container
+  .row
+    h1 Project一覧
 
-table
-  thead
-    tr
-      th Name
-      th
-      th
-      th
+  .row
+    ul
+      - @projects.each do |project|
+        li = link_to "#{project.name}", issues_path(project)
+        => link_to '編集', edit_project_path(project)
+        = link_to '削除', project, data: { confirm: 'Are you sure?' }, method: :delete
 
-  tbody
-    - @projects.each do |project|
-      tr
-        td = project.name
-        td = link_to 'Show', project
-        td = link_to 'Edit', edit_project_path(project)
-        td = link_to 'Destroy', project, data: { confirm: 'Are you sure?' }, method: :delete
+    br
 
-br
-
-= link_to 'New Project', new_project_path
+    = link_to '新規issue作成', new_issue_path
+    br
+    = link_to '新規project作成', new_project_path

@@ -19,5 +19,5 @@ Rails.application.routes.draw do
     get 'issues/:id', to: 'evaluations#user_select'
     get 'issues/:id/users/:uid', to: 'evaluations#show'
   end
-  root to: "issues#index"
+  root to: "projects#index"
 end
