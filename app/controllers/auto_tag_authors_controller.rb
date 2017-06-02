@@ -25,7 +25,7 @@ class AutoTagAuthorsController < ApplicationController
   end
 
   def update
-    if @auto_tag_author.update
+    if @auto_tag_author.update(auto_tag_author_params)
       flash[:success] = "更新しました"
       redirect_to action: 'index'
     else
