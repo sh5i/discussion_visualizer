@@ -1,5 +1,15 @@
-h1 New project
+.container
+  .row
+    h1 Project新規登録
 
-== render 'form'
+  = form_for(@project) do |f|
+    .row
+      .col-md-12 = f.label :Project名
+      .col-md-12 = f.text_field :name, style: "width:100%"
 
-= link_to 'Back', projects_path
+    .pull-right.mt10
+      = f.submit class: "btn btn-primary"
+
+    /== render 'form'
+    .clearfix
+    .pull-right.mt10
