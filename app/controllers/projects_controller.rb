@@ -25,15 +25,13 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
     @project = Project.new(project_params)
-
-    respond_to do |format|
-      if @project.save
-        format.html { redirect_to projects_path, notice: 'Project was successfully created.' }
-        format.json { render :show, status: :created, location: @project }
-      else
-        format.html { render :new }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
-      end
+    if(Project.where(name: @project.name).empty?) then
+      @project.save
+      flash[:success] = "Projectを追加しました"
+      redirect_to projects_path
+    else
+      flash[:error] = "同名のProjectがすでに存在します"
+      redirect_to new_project_path
     end
   end
 
