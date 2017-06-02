@@ -10,12 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170602051846) do
+ActiveRecord::Schema.define(version: 20170602055401) do
 
   create_table "auto_tag_authors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "author_name"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.string   "tag_content"
+    t.integer  "project_id"
+    t.index ["project_id"], name: "index_auto_tag_authors_on_project_id", using: :btree
   end
 
   create_table "bookmarks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -129,6 +132,7 @@ ActiveRecord::Schema.define(version: 20170602051846) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id", using: :btree
   end
 
+  add_foreign_key "auto_tag_authors", "projects", on_update: :cascade, on_delete: :cascade
   add_foreign_key "comments", "issues", on_update: :cascade, on_delete: :cascade
   add_foreign_key "edges", "comments", on_update: :cascade, on_delete: :cascade
   add_foreign_key "issue_relations", "issues", on_update: :cascade, on_delete: :cascade
