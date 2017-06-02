@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170602042046) do
+ActiveRecord::Schema.define(version: 20170602043126) do
 
   create_table "bookmarks", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer  "user_id"
@@ -50,8 +50,14 @@ ActiveRecord::Schema.define(version: 20170602042046) do
     t.string   "url"
     t.string   "type_text"
     t.string   "title"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.string   "name"
+    t.integer  "project_id"
+    t.integer  "user_id"
+    t.string   "status_type"
+    t.index ["project_id"], name: "index_issues_on_project_id", using: :btree
+    t.index ["user_id"], name: "index_issues_on_user_id", using: :btree
   end
 
   create_table "logs", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -115,6 +121,8 @@ ActiveRecord::Schema.define(version: 20170602042046) do
 
   add_foreign_key "comments", "issues", on_update: :cascade, on_delete: :cascade
   add_foreign_key "edges", "comments", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "issues", "projects", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "issues", "users", on_update: :nullify, on_delete: :nullify
   add_foreign_key "logs", "users", on_update: :cascade, on_delete: :cascade
   add_foreign_key "tags", "comments", on_update: :cascade, on_delete: :cascade
   add_foreign_key "tags", "users", on_update: :cascade, on_delete: :cascade
