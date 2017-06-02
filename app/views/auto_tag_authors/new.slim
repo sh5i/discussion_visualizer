@@ -8,7 +8,7 @@
   .row
     = form_for @auto_tag_author, :url => {:action => :create} do |f|
       .field
-        = f.label :name, "名前"
-        = f.text_field :name
+        = f.label :author_name, "名前"
+        = f.text_field :author_name
       .submit
         = f.submit class: 'btn btn-primary'

@@ -36,7 +36,7 @@ class AutoTagAuthorsController < ApplicationController
 
   def destroy
     if @auto_tag_author.destroy
-      flash[:success] = "#{@auto_tag_author.name} を削除しました"
+      flash[:success] = "#{@auto_tag_author.author_name} を削除しました"
       redirect_to action: 'index'
     else
       flash[:error] = "削除に失敗しました"
@@ -51,7 +51,7 @@ class AutoTagAuthorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def auto_tag_author_params
-      params.fetch(:auto_tag_author, {}).permit(:id, :name)
+      params.fetch(:auto_tag_author, {}).permit(:id, :author_name)
     end
 
 end

@@ -56,7 +56,7 @@ class Comment < ApplicationRecord
 
   def set_tag(user)
     unless type_text == :description
-      if AutoTagAuthor.exists?(name: self.author)
+      if AutoTagAuthor.exists?(author_name: self.author)
         Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
       else
         arr = self.content.to_s.split(/\s*(\.|\?|\;)\s*/)
