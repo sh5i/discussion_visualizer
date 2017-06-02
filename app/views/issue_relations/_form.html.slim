@@ -1,0 +1,21 @@
+= form_for @issue_relation do |f|
+  - if @issue_relation.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@issue_relation.errors.count, "error")} prohibited this issue_relation from being saved:"
+      ul
+        - @issue_relation.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :issue
+    = f.text_field :issue
+  .field
+    = f.label :target_issue_title
+    = f.text_field :target_issue_title
+  .field
+    = f.label :target_issue_name
+    = f.text_field :target_issue_name
+  .field
+    = f.label :type_text
+    = f.text_field :type_text
+  .actions = f.submit

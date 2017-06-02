@@ -1,0 +1,27 @@
+h1 Listing issue_relations
+
+table
+  thead
+    tr
+      th Issue
+      th Target issue title
+      th Target issue name
+      th Type text
+      th
+      th
+      th
+
+  tbody
+    - @issue_relations.each do |issue_relation|
+      tr
+        td = issue_relation.issue
+        td = issue_relation.target_issue_title
+        td = issue_relation.target_issue_name
+        td = issue_relation.type_text
+        td = link_to 'Show', issue_relation
+        td = link_to 'Edit', edit_issue_relation_path(issue_relation)
+        td = link_to 'Destroy', issue_relation, data: { confirm: 'Are you sure?' }, method: :delete
+
+br
+
+= link_to 'New Issue relation', new_issue_relation_path

@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :issue_relations
   resources :projects
   devise_for :users
   resources :issues

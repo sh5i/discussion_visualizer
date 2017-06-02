@@ -1,0 +1,18 @@
+p#notice = notice
+
+p
+  strong Issue:
+  = @issue_relation.issue
+p
+  strong Target issue title:
+  = @issue_relation.target_issue_title
+p
+  strong Target issue name:
+  = @issue_relation.target_issue_name
+p
+  strong Type text:
+  = @issue_relation.type_text
+
+= link_to 'Edit', edit_issue_relation_path(@issue_relation)
+'  |
+= link_to 'Back', issue_relations_path
