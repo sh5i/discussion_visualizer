@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PatchAuthorsControllerTest < ActionDispatch::IntegrationTest
+class AutoTagAuthorTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

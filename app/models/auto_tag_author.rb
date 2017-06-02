@@ -1,0 +1,2 @@
+class AutoTagAuthor < ApplicationRecord
+end

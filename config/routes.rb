@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   end
   resources :edges
   resources :tags
-  resources :patch_authors, :as => :settings, :path => 'settings'
+  resources :auto_tag_authors, :as => :settings, :path => 'settings'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   resource :evaluations, only: [:index, :show] do

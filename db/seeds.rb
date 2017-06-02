@@ -13,5 +13,5 @@ user.save!
 user = User.new(:email => ENV["DV_SAMPLE_EMAIL"], :password => ENV["DV_SAMPLE_PW"])
 user.save!
 
-PatchAuthor.create(name: "hadoopqa")
-PatchAuthor.create(name: "apachespark")
+AutoTagAuthor.create(name: "hadoopqa")
+AutoTagAuthor.create(name: "apachespark")

@@ -1,12 +1,12 @@
 .container
   .row
-    h1 自動記述者 編集
+    h1 自動記述者新規作成
 
     br
     | ※ 機械記述者のuser名を記入してください(aタグ中のrel属性に相当します)
 
   .row
-    = form_for @patch_author, :url => {:action => :update} do |f|
+    = form_for @auto_tag_author, :url => {:action => :create} do |f|
       .field
         = f.label :name, "名前"
         = f.text_field :name

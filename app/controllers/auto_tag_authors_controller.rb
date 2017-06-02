@@ -1,21 +1,21 @@
-class PatchAuthorsController < ApplicationController
-  before_action :set_patch_author, only: [:edit, :update, :destroy]
+class AutoTagAuthorsController < ApplicationController
+  before_action :set_auto_tag_author, only: [:edit, :update, :destroy]
 
   def index
-    @patch_authors = PatchAuthor.all
+    @auto_tag_authors = AutoTagAuthor.all
   end
 
   def new
-    @patch_author = PatchAuthor.new
+    @auto_tag_author = AutoTagAuthor.new
   end
 
   def edit
   end
 
   def create
-    @patch_author = PatchAuthor.new(patch_author_params)
+    @auto_tag_author = AutoTagAuthor.new(auto_tag_author_params)
 
-    if @patch_author.save
+    if @auto_tag_author.save
       flash[:success] = "登録しました"
       redirect_to action: 'index'
     else
@@ -25,7 +25,7 @@ class PatchAuthorsController < ApplicationController
   end
 
   def update
-    if @patch_author.update
+    if @auto_tag_author.update
       flash[:success] = "更新しました"
       redirect_to action: 'index'
     else
@@ -35,8 +35,8 @@ class PatchAuthorsController < ApplicationController
   end
 
   def destroy
-    if @patch_author.destroy
-      flash[:success] = "#{@patch_author.name} を削除しました"
+    if @auto_tag_author.destroy
+      flash[:success] = "#{@auto_tag_author.name} を削除しました"
       redirect_to action: 'index'
     else
       flash[:error] = "削除に失敗しました"
@@ -45,13 +45,13 @@ class PatchAuthorsController < ApplicationController
   end
 
   private
-    def set_patch_author
-      @patch_author = PatchAuthor.find(params[:id])
+    def set_auto_tag_author
+      @auto_tag_author = AutoTagAuthor.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def patch_author_params
-      params.fetch(:patch_author, {}).permit(:id, :name)
+    def auto_tag_author_params
+      params.fetch(:auto_tag_author, {}).permit(:id, :name)
     end
 
 end
