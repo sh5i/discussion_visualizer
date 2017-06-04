@@ -12,8 +12,11 @@ class IssuesController < ApplicationController
   # GET /issues
   # GET /issues.json
   def index
-    @issues = Issue.belongs_user(current_user)
-    @issue = Issue.new
+    if(!params[:format].nil?)
+      session[:project_id] = params[:format]
+    end
+    @project = Project.find_by(id: session[:project_id])
+    @issues = Issue.where(project_id: @project)
   end
 
   # GET /issues/1
