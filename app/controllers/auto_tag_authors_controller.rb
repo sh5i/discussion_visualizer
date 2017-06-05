@@ -18,6 +18,19 @@ class AutoTagAuthorsController < ApplicationController
 
     if @auto_tag_author.save
       flash[:success] = "登録しました"
+      #追加した自動タグに基づいてタグを更新
+      #プロジェクトを取得
+      nowProject=Project.find(session[:project_id])
+
+      #現在プロジェクトに含まれる全issueの該当コメントについてタグをつける
+      Issue.where(project_id: session[:project_id]).each do |iss|
+        Comment.where(issue_id: iss.id, author: @auto_tag_author.author_name).each do |com|
+          #タグをつける
+          com.set_auto_tag(current_user,@auto_tag_author)
+        end
+      end
+
+
       redirect_to action: 'index'
     else
       flash[:error] = "登録に失敗しました"

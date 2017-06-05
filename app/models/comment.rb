@@ -76,6 +76,15 @@ class Comment < ApplicationRecord
       end
     end
   end
+#自動タグの更新。
+  def set_auto_tag(user , autoTag)
+    unless type_text == :description
+      if !Tag.exists?(comment_id: self.id , content: autoTag.tag_content)
+        Tag.create!(user_id: user.id, comment_id: self.id, content: autoTag.tag_content);
+
+      end
+    end
+  end
 
   def get_color
     # コメントラベルによって色をつける
