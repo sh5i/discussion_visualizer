@@ -2,7 +2,8 @@ class AutoTagAuthorsController < ApplicationController
   before_action :set_auto_tag_author, only: [:edit, :update, :destroy]
 
   def index
-    @auto_tag_authors = AutoTagAuthor.all
+    @auto_tag_authors = AutoTagAuthor.where(project_id: session[:project_id])
+    @auto_tag_authors ||= []
   end
 
   def new
