@@ -14,6 +14,7 @@ class AutoTagAuthorsController < ApplicationController
 
   def create
     @auto_tag_author = AutoTagAuthor.new(auto_tag_author_params)
+    @auto_tag_author.project_id = session[:project_id]
 
     if @auto_tag_author.save
       flash[:success] = "登録しました"
