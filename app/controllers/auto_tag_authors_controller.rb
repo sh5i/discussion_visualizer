@@ -52,7 +52,7 @@ class AutoTagAuthorsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def auto_tag_author_params
-      params.fetch(:auto_tag_author, {}).permit(:id, :author_name)
+      params.fetch(:auto_tag_author, {}).permit(:id, :author_name ,:tag_content)
     end
 
 end
