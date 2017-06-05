@@ -45,6 +45,21 @@ class IssuesController < ApplicationController
       doc = Nokogiri::XML(open(xml_url.join("/")))
 
       @issue.title = doc.xpath('rss/channel/item/title').text
+
+      from_index = @issue.title.index("[")
+      to_index = @issue.title.index("]")
+      @issue.name = @issue.title[(from_index+1)..(to_index-1)]
+
+      to_index = @issue.name.index("-")
+      project_name = @issue.name[0..(to_index-1)]
+      @project = Project.find_by(name: project_name)
+      if(@project.nil?)
+        @project = Project.new(name: project_name)
+        @project.save
+      end
+      @issue.project = @project
+      session[:project_id] = @project.id
+      
       @issue.type_text = doc.xpath('rss/channel/item/type').text
 
       @duplicate_issue = Issue.find_by(url: @issue.url)
