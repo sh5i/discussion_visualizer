@@ -39,7 +39,27 @@ class AutoTagAuthorsController < ApplicationController
   end
 
   def update
+
+
+    oldAutoTagAuthor=AutoTagAuthor.find(params["id"])
     if @auto_tag_author.update(auto_tag_author_params)
+      #変更した自動タグに基づいてタグを更新
+      #プロジェクトを取得
+      nowProject=Project.find(session[:project_id])
+
+      #現在プロジェクトに含まれる全issueの該当コメントについてタグを更新
+      Issue.where(project_id: session[:project_id]).each do |iss|
+        Comment.where(issue_id: iss.id, author: @auto_tag_author.author_name ).each do |com|
+          Tag.where(comment_id: com.id , content: oldAutoTagAuthor.tag_content).each do |t|
+            #コンテンツを変更
+            t.content=@auto_tag_author.tag_content    
+            t.save
+          end
+        end
+      end
+
+
+
       flash[:success] = "更新しました"
       redirect_to action: 'index'
     else
