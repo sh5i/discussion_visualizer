@@ -58,6 +58,7 @@ class Comment < ApplicationRecord
     unless type_text == :description
       if AutoTagAuthor.exists?(author_name: self.author)
         #Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
+        #auto_tag_authorテーブルにある場合その全てのタグを付ける
         AutoTagAuthor.where(author_name: self.author).each do |ata|
           Tag.create!(user_id: user.id, comment_id: self.id, content: ata.tag_content)
         end

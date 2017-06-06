@@ -50,12 +50,19 @@ class AutoTagAuthorsController < ApplicationController
 
       #現在プロジェクトに含まれる全issueの該当コメントについてタグを更新
       Issue.where(project_id: session[:project_id]).each do |iss|
-        Comment.where(issue_id: iss.id, author: @auto_tag_author.author_name ).each do |com|
+        Comment.where(issue_id: iss.id, author: oldAutoTagAuthor.author_name ).each do |com|
           Tag.where(comment_id: com.id , content: oldAutoTagAuthor.tag_content).each do |t|
-            #コンテンツを変更
-            t.content=@auto_tag_author.tag_content    
-            t.save
+            #対応するタグを削除
+            #t.content=@auto_tag_author.tag_content    
+            #t.save
+            t.delete
           end
+        end
+      end
+      #現在プロジェクトに含まれる全issueのコメントに対して更新後の自動タグ付けを行う
+      Issue.where(project_id: session[:project_id]).each do |iss|
+        Comment.where(issue_id: iss.id, author: @auto_tag_author.author_name ).each do |com|
+          Tag.create!(user_id: current_user.id, comment_id: com.id, content: @auto_tag_author.tag_content)
         end
       end
 
