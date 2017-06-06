@@ -57,7 +57,10 @@ class Comment < ApplicationRecord
   def set_tag(user)
     unless type_text == :description
       if AutoTagAuthor.exists?(author_name: self.author)
-        Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
+        #Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
+        AutoTagAuthor.where(author_name: self.author).each do |ata|
+          Tag.create!(user_id: user.id, comment_id: self.id, content: ata.tag_content)
+        end
       else
         arr = self.content.to_s.split(/\s*(\.|\?|\;)\s*/)
         array = arr.each_slice(2).to_a
