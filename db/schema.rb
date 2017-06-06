@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170602055401) do
+ActiveRecord::Schema.define(version: 20170606045412) do
 
   create_table "auto_tag_authors", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "author_name"
@@ -97,8 +97,10 @@ ActiveRecord::Schema.define(version: 20170602055401) do
     t.integer  "user_id"
     t.integer  "comment_id"
     t.string   "content"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+    t.integer  "auto_tag_author_id"
+    t.index ["auto_tag_author_id"], name: "index_tags_on_auto_tag_author_id", using: :btree
     t.index ["comment_id"], name: "index_tags_on_comment_id", using: :btree
     t.index ["user_id"], name: "index_tags_on_user_id", using: :btree
   end
@@ -139,6 +141,7 @@ ActiveRecord::Schema.define(version: 20170602055401) do
   add_foreign_key "issues", "projects", on_update: :cascade, on_delete: :cascade
   add_foreign_key "issues", "users", on_update: :nullify, on_delete: :nullify
   add_foreign_key "logs", "users", on_update: :cascade, on_delete: :cascade
+  add_foreign_key "tags", "auto_tag_authors", on_update: :cascade, on_delete: :cascade
   add_foreign_key "tags", "comments", on_update: :cascade, on_delete: :cascade
   add_foreign_key "tags", "users", on_update: :cascade, on_delete: :cascade
 end
