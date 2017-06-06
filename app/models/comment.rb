@@ -60,7 +60,7 @@ class Comment < ApplicationRecord
         #Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
         #auto_tag_authorテーブルにある場合その全てのタグを付ける
         AutoTagAuthor.where(author_name: self.author).each do |ata|
-          Tag.create!(user_id: user.id, comment_id: self.id, content: ata.tag_content)
+          Tag.create!(user_id: user.id, comment_id: self.id, content: ata.tag_content , auto_tag_author_id: ata.id)
         end
       else
         arr = self.content.to_s.split(/\s*(\.|\?|\;)\s*/)
