@@ -82,25 +82,9 @@ class IssuesController < ApplicationController
             flash[:error] = "課題の登録に失敗"
             render :new
         end
-      elsif Edge.where(comment_id: @duplicate_issue.comments).find_by(user_id: current_user).nil?
-        logger.error "----DUPLICATE----"
-        begin
-          ActiveRecord::Base.transaction do
-            create_edges(@duplicate_issue.comments, current_user)
-            create_svg(@duplicate_issue, current_user)
-          end
-            flash[:success] = "課題の登録に成功"
-            redirect_to @duplicate_issue
-          rescue => e
-            logger.error "----DUPLICATE_ERROR----"
-            logger.error e
-            logger.error "----DUPLICATE_ERROR----"
-            flash[:error] = "課題の登録に失敗"
-            render :new
-        end
       else
-        flash[:success] = "登録済みでした"
-        redirect_to Issue.find_by(url: @issue.url)
+        flash[:error] = "登録済みでした"
+        redirect_to new_issue_path
       end
     else
       flash[:error] = "JIRAのプロジェクトを指定してください"

@@ -13,7 +13,7 @@ span.title = link_to @issue.url, target: "_blank" do
       == material_icon.zoom_out.css_class('align-middle')
       | 縮小
   .graph_area.dragscroll
-    = embedded_svg("#{current_user.id}_#{@issue.id}.svg")
+    = embedded_svg("#{@issue.id}.svg")
 
   .tag_area.panel-group
     = render partial: "issues/tags", locals: {tags: @issue.tags.select(:content).uniq}
