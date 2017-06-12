@@ -99,7 +99,7 @@ class CommentsController < ApplicationController
   end
 
   def tags
-    @tags = Tag.where(content: params[:tag], user_id: current_user.id)
+    @tags = Tag.where(content: params[:tag])
     @comments = Comment.where(id: @tags.pluck(:comment_id))
     render json: {tags: @tags, comments: @comments}
   end
