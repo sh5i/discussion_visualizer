@@ -18,7 +18,7 @@
 
     .title = "Tags"
     .form.tags
-      = f.fields_for :tags, comment.tags.where(user_id: current_user) do |tf|
+      = f.fields_for :tags do |tf|
         = tf.text_field :content, id: "tag_field"
         = tf.hidden_field :user_id, :value => current_user.id
         = tf.link_to_remove "削除", class: "btn btn-danger"
