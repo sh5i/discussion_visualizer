@@ -81,7 +81,7 @@ class AutoTagAuthorsController < ApplicationController
       #現在プロジェクトに含まれる全issueのコメントに対して更新後の自動タグ付けを行う
       Issue.where(project_id: session[:project_id]).each do |iss|
         Comment.where(issue_id: iss.id, author: @auto_tag_author.author_name ).each do |com|
-          Tag.create!(user_id: current_user.id, comment_id: com.id, content: @auto_tag_author.tag_content)
+          Tag.create!(user_id: current_user.id, comment_id: com.id, content: @auto_tag_author.tag_content , auto_tag_author_id: @auto_tag_author.id)
         end
       end
 
