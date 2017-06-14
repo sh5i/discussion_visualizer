@@ -11,12 +11,12 @@
     table.table.table-striped 
       thead
         tr
-          th = '名前'
+          th = '名前 (タグ名)'
           th = '操作'
       tbody
       - @auto_tag_authors.each do |author|
         tr
-          td.align-middle = author.author_name
+          td.align-middle = author.author_name+" ("+author.tag_content+")"
           td
             = link_to '編集', edit_setting_path(author), class: 'btn btn-default'
             = link_to '削除', setting_path(author), :method => :delete, class: 'btn btn-danger'
