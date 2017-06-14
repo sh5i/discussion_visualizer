@@ -1,11 +1,11 @@
 .container
   .row
     h1 自動記述者一覧
-
     br
     | ※ 機械記述者のuser名を記入してください(aタグ中のrel属性に相当します)
 
-    .pull-right = link_to '新規作成', new_setting_path, class: 'btn btn-primary'
+    .pull-right = link_to '新規作成', new_setting_path, class: 'btn btn-default'
+    .pull-right = link_to 'Issue一覧へ', issues_path, class: 'btn btn-default'
 
   .row
     table.table.table-striped 
