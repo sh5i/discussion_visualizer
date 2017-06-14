@@ -24,7 +24,9 @@ class AutoTagAuthorsController < ApplicationController
       contents.each do |it_content|
         @auto_tag_author = AutoTagAuthor.new(author_name: it_name , tag_content: it_content)
         @auto_tag_author.project_id = session[:project_id]      
-
+        if AutoTagAuthor.where(author_name: it_name , tag_content: it_content).count!=0 then
+          next
+        end
         if @auto_tag_author.save
           flash[:success] = "タグ"+it_name+":"+it_content+"を登録しました"
           #追加した自動タグに基づいてタグを更新
