@@ -14,29 +14,46 @@ class AutoTagAuthorsController < ApplicationController
   end
 
   def create
-    @auto_tag_author = AutoTagAuthor.new(auto_tag_author_params)
-    @auto_tag_author.project_id = session[:project_id]
+    #カンマ区切りの入力を配列にする
+    names=auto_tag_author_params[:author_name].split(",")
+    contents=auto_tag_author_params[:tag_content].split(",")
+    #登録が全部成功したか？
+    succeeded=true
+    #eachでそれぞれの要素について回す
+    names.each do |it_name|
+      contents.each do |it_content|
+        @auto_tag_author = AutoTagAuthor.new(author_name: it_name , tag_content: it_content)
+        @auto_tag_author.project_id = session[:project_id]      
 
-    if @auto_tag_author.save
-      flash[:success] = "登録しました"
-      #追加した自動タグに基づいてタグを更新
-      #プロジェクトを取得
-      nowProject=Project.find(session[:project_id])
+        if @auto_tag_author.save
+          flash[:success] = "タグ"+it_name+":"+it_content+"を登録しました"
+          #追加した自動タグに基づいてタグを更新
+          #プロジェクトを取得
+          nowProject=Project.find(session[:project_id])
 
-      #現在プロジェクトに含まれる全issueの該当コメントについてタグをつける
-      Issue.where(project_id: session[:project_id]).each do |iss|
-        Comment.where(issue_id: iss.id, author: @auto_tag_author.author_name).each do |com|
-          #タグをつける
-          com.set_auto_tag(current_user,@auto_tag_author)
+          #現在プロジェクトに含まれる全issueの該当コメントについてタグをつける
+          Issue.where(project_id: session[:project_id]).each do |iss|
+            Comment.where(issue_id: iss.id, author: @auto_tag_author.author_name).each do |com|
+              #タグをつける
+              com.set_auto_tag(current_user,@auto_tag_author)
+            end
+          end
+
+
+          #redirect_to action: 'index'
+        else
+          flash[:error] = "登録に失敗しました"
+          succeeded=false;
+          #render :new
         end
       end
-
-
+    end
+    if succeeded then
       redirect_to action: 'index'
     else
-      flash[:error] = "登録に失敗しました"
       render :new
     end
+
   end
 
   def update
