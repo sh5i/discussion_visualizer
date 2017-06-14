@@ -24,7 +24,7 @@ class AutoTagAuthorsController < ApplicationController
       contents.each do |it_content|
         @auto_tag_author = AutoTagAuthor.new(author_name: it_name , tag_content: it_content)
         @auto_tag_author.project_id = session[:project_id]      
-        if AutoTagAuthor.where(author_name: it_name , tag_content: it_content).count!=0 then
+        if AutoTagAuthor.where(author_name: it_name , tag_content: it_content, project_id: session[:project_id]).count!=0 then
           next
         end
         if @auto_tag_author.save
