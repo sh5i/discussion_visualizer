@@ -11,4 +11,5 @@ class User < ApplicationRecord
   has_many  :logs
 
   enumerize :role,  in: [:admin, :general], default: :general,  predicates: true
+  validates :username, presence: true, uniqueness: true
 end

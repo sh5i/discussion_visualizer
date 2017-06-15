@@ -6,7 +6,7 @@
   = nested_form_for(comment, url: {:controller => :comments, :action => :create_or_update, :id => comment, :user => current_user}) do |f|
     .title = "Edges"
     .form.edges
-      = f.fields_for :edges, comment.edges.where(user_id: current_user) do |ef|
+      = f.fields_for :edges do |ef|
         /- display_class = ef.object.user == current_user ? "" : "hidden"
         = ef.collection_select :to_comment_id, comments, :id, :internal_id, include_blank: false, selected: ef.object.to_comment_id, label: false
         = ef.text_field :reason, placeholder: "変更理由を記述"
@@ -18,7 +18,7 @@
 
     .title = "Tags"
     .form.tags
-      = f.fields_for :tags, comment.tags.where(user_id: current_user) do |tf|
+      = f.fields_for :tags do |tf|
         = tf.text_field :content, id: "tag_field"
         = tf.hidden_field :user_id, :value => current_user.id
         = tf.link_to_remove "削除", class: "btn btn-danger"

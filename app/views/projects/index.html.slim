@@ -1,0 +1,14 @@
+.container
+  .row
+    h1 Project一覧
+
+  .row
+    ul
+      - @projects.each do |project|
+        li = link_to "#{project.name}", issues_path(project)
+        = link_to '削除', project, data: { confirm: '本当に削除しても良いですか？' }, method: :delete
+    br
+
+    = link_to '新規Issue作成', new_issue_path
+    br
+    = link_to '新規Project作成', new_project_path

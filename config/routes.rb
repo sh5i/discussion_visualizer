@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :issue_relations
+  resources :projects
   devise_for :users
   resources :issues
   resources :comments do
@@ -9,7 +11,7 @@ Rails.application.routes.draw do
   end
   resources :edges
   resources :tags
-  resources :patch_authors, :as => :settings, :path => 'settings'
+  resources :auto_tag_authors, :as => :settings, :path => 'settings'
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   resource :evaluations, only: [:index, :show] do
@@ -17,5 +19,5 @@ Rails.application.routes.draw do
     get 'issues/:id', to: 'evaluations#user_select'
     get 'issues/:id/users/:uid', to: 'evaluations#show'
   end
-  root to: "issues#index"
+  root to: "projects#index"
 end

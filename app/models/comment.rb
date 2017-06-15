@@ -56,8 +56,12 @@ class Comment < ApplicationRecord
 
   def set_tag(user)
     unless type_text == :description
-      if PatchAuthor.exists?(name: self.author)
-        Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
+      if AutoTagAuthor.exists?(author_name: self.author)
+        #Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
+        #auto_tag_authorテーブルにある場合その全てのタグを付ける
+        AutoTagAuthor.where(author_name: self.author).each do |ata|
+          Tag.create!(user_id: user.id, comment_id: self.id, content: ata.tag_content , auto_tag_author_id: ata.id)
+        end
       else
         arr = self.content.to_s.split(/\s*(\.|\?|\;)\s*/)
         array = arr.each_slice(2).to_a
@@ -73,6 +77,15 @@ class Comment < ApplicationRecord
           #   end
           end
         end
+      end
+    end
+  end
+#自動タグの更新。
+  def set_auto_tag(user , autoTag)
+    unless type_text == :description
+      if !Tag.exists?(comment_id: self.id , content: autoTag.tag_content)
+        Tag.create!(user_id: user.id, comment_id: self.id, content: autoTag.tag_content , auto_tag_author_id: autoTag.id);
+
       end
     end
   end
