@@ -6,3 +6,12 @@
       .radio-button class=t.content
         = radio_button_tag :tag, t.content
         = label :t, t.content, value: t.content
+.panel.panel-default
+  .panel-heading
+    .panel-title = "filter"
+  .panel-body.btn-area
+    .radio-button class="filter"
+      = radio_button_tag :filter_status, "normal"
+      = label :filter, "normal", value: "normal"
+      = radio_button_tag :filter_status, "exclusive"
+      = label :filter, "exclusive", value: "exclusive"
