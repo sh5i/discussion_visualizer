@@ -1,5 +1,12 @@
 $ ->
   is_checked = $('input[name="tag"]:checked').val()
+  console.log($('input[name="tag"]:checked'));
+  checked_arr=[]
+  #logについてるタグを出力するテストコード
+  $('input[name="tag"]:checked').each ->
+      console.log($(this).val())
+      checked_arr.push($(this).val())
+    console.log(checked_arr)
   $(document).on 'click' ,'input[name="tag"]', ->
     if $(this).val() == is_checked
       # ラジオボタンを解除する
