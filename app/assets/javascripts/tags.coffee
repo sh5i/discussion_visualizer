@@ -1,6 +1,6 @@
 $ ->
   is_checked = $('input[name="tag"]:checked').val()
-  $(document).on 'click' ,'input[name="tag"]:radio', ->
+  $(document).on 'click' ,'input[name="tag"]', ->
     if $(this).val() == is_checked
       # ラジオボタンを解除する
       $('input[name="tag"]').prop('checked', false)
