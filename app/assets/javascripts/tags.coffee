@@ -7,6 +7,7 @@ $ ->
       console.log($(this).val())
       checked_arr.push($(this).val())
     console.log(checked_arr)
+  #todo:解除時の挙動
   $(document).on 'click' ,'input[name="tag"]', ->
     if $(this).val() == is_checked
       # ラジオボタンを解除する
@@ -20,8 +21,16 @@ $ ->
 
       # ラジオボタン選択時にサーバーと通信してtag検索を行う
       $("g.node.same-tag").each( -> $(this).removeClass("same-tag"))
-      tag = $(this).val()
-      path = "/comments/tags?"+"tag="+tag
+      checked_arr=[]
+      $('input[name="tag"]:checked').each ->
+          checked_arr.push($(this).val())
+      path = "/comments/tags?"
+      
+      for tag in checked_arr
+        path+="tag[]="
+        path+=tag
+        path+="&"
+      path=path.slice(0,-1)
       if path
         $.ajax(
           method: 'GET'
