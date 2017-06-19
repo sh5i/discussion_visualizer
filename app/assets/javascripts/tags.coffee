@@ -17,15 +17,14 @@ $ ->
       $("g.node.same-tag").each( -> $(this).removeClass("same-tag"))
       $(".comments_area .comment").each( -> $(this).show("fast"))
     else
-      is_checked = $(this).val()
-
+      filter = $('input[name="filter_status"]:checked').val()
       # ラジオボタン選択時にサーバーと通信してtag検索を行う
       $("g.node.same-tag").each( -> $(this).removeClass("same-tag"))
       checked_arr=[]
       $('input[name="tag"]:checked').each ->
           checked_arr.push($(this).val())
       path = "/comments/tags?"
-      
+      path+= "filter="+filter+"&" 
       for tag in checked_arr
         path+="tag[]="
         path+=tag

@@ -11,7 +11,7 @@
     .panel-title = "filter"
   .panel-body.btn-area
     .radio-button class="filter"
-      = radio_button_tag :filter_status, "normal"
+      = radio_button_tag :filter_status, "normal", :checked => true
       = label :filter, "normal", value: "normal"
       = radio_button_tag :filter_status, "exclusive"
       = label :filter, "exclusive", value: "exclusive"
