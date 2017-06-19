@@ -48,4 +48,5 @@ $ ->
     else
       get_comment_from_server()
 
-  #$(document).on 'click' ,'input[name="tag"]', ->
+  $(document).on 'click' ,'input[name="filter_status"]', ->
+    get_comment_from_server()
