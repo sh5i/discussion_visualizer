@@ -100,7 +100,7 @@ class CommentsController < ApplicationController
 
   def tags
     @tags = Tag.where(content: params[:tag])
-    #タグによってとってくるコメントを変える
+    #filterパラメータによってとってくるコメントを変える
     if params[:filter] == "normal"
       @comments = Comment.where(id: @tags.pluck(:comment_id))
     else
