@@ -152,7 +152,7 @@ class IssuesController < ApplicationController
                                  jira_id: cmt.attribute("id"),
                                  internal_id: count )
           @comment.save!
-          @comment.set_tag(current_user , session[:project_id])
+          @comment.set_tag(current_user, session[:project_id])
           count += 1
         end
 
