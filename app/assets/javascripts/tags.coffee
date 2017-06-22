@@ -4,16 +4,14 @@ $ ->
     filter = $('input[name="filter_status"]:checked').val()
     # ラジオボタン選択時にサーバーと通信してtag検索を行う
     $("g.node.same-tag").each( -> $(this).removeClass("same-tag"))
-    checked_arr=[]
+    checked_arr = []
     $('input[name="tag"]:checked').each ->
         checked_arr.push($(this).val())
     path = "/comments/tags?"
-    path+= "filter="+filter+"&" 
+    path += "filter="+filter+"&" 
     for tag in checked_arr
-      path+="tag[]="
-      path+=tag
-      path+="&"
-    path=path.slice(0,-1)
+      path += "tag[]="+tag+"&"
+    path = path.slice(0,-1)
     if path
       $.ajax(
         method: 'GET'
@@ -25,17 +23,12 @@ $ ->
           $(".comments_area .comment##{'comment-' + comment['jira_id']}").show("fast")
       ).fail( ( jqXHR, textStatus ) ->
         # TODO Error Handling
-        # console.log( "Request failed: " + textStatus)
       )
 
   is_checked = $('input[name="tag"]:checked').val()
-  console.log($('input[name="tag"]:checked'));
-  checked_arr=[]
-  #logについてるタグを出力するテストコード
+  checked_arr = []
   $('input[name="tag"]:checked').each ->
-      console.log($(this).val())
       checked_arr.push($(this).val())
-    console.log(checked_arr)
   #todo:解除時の挙動
   $(document).on 'click' ,'input[name="tag"]', ->
     if $(this).val() == is_checked
