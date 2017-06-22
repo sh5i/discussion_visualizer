@@ -12,7 +12,7 @@ class IssuesController < ApplicationController
   # GET /issues
   # GET /issues.json
   def index
-    if(!params[:format].nil?)
+    if !params[:format]
       session[:project_id] = params[:format]
     end
     @project = Project.find_by(id: session[:project_id])
@@ -45,15 +45,10 @@ class IssuesController < ApplicationController
       doc = Nokogiri::XML(open(xml_url.join("/")))
 
       @issue.title = doc.xpath('rss/channel/item/title').text
+      _, @issue.name, project_name = *@issue.title.match(/\[((.*?)\-.*?)\]/)
 
-      from_index = @issue.title.index("[")
-      to_index = @issue.title.index("]")
-      @issue.name = @issue.title[(from_index+1)..(to_index-1)]
-
-      to_index = @issue.name.index("-")
-      project_name = @issue.name[0..(to_index-1)]
       @project = Project.find_by(name: project_name)
-      if(@project.nil?)
+      if @project.nil?
         @project = Project.new(name: project_name)
         @project.save
       end

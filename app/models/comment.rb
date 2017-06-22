@@ -83,8 +83,8 @@ class Comment < ApplicationRecord
 #自動タグの更新。
   def set_auto_tag(user , autoTag)
     unless type_text == :description
-      if !Tag.exists?(comment_id: self.id , content: autoTag.tag_content)
-        Tag.create!(user_id: user.id, comment_id: self.id, content: autoTag.tag_content , auto_tag_author_id: autoTag.id);
+      if !Tag.exists?(comment_id: self.id, content: autoTag.tag_content)
+        Tag.create!(user_id: user.id, comment_id: self.id, content: autoTag.tag_content , auto_tag_author_id: autoTag.id)
 
       end
     end
