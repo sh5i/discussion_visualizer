@@ -68,22 +68,15 @@ class AutoTagAuthorsController < ApplicationController
       nowProject=Project.find(session[:project_id])
 
       #現在プロジェクトに含まれる全issueの該当コメントについてタグを更新
-      Issue.where(project_id: session[:project_id]).each do |iss|
-        Comment.where(issue_id: iss.id, author: oldAutoTagAuthor.author_name ).each do |com|
-          Tag.where(comment_id: com.id , content: oldAutoTagAuthor.tag_content).each do |t|
-            #対応するタグを削除
-            #t.content=@auto_tag_author.tag_content    
-            #t.save
-            t.delete
-          end
-        end
-      end
+      #ふるいタグを削除
+      #普通にTag.joins(comment: :issue)を行うとcomment.tag_idが無いと言われてしまう。
+      Tag.joins("INNER JOIN `comments` ON `comments`.`id` = `tags`.`comment_id` INNER JOIN `issues` ON `issues`.`id` = `comments`.`issue_id`").where("issues.project_id": session[:project_id], "comments.author": oldAutoTagAuthor.author_name, content: oldAutoTagAuthor.tag_content).delete_all
       #現在プロジェクトに含まれる全issueのコメントに対して更新後の自動タグ付けを行う
-      Issue.where(project_id: session[:project_id]).each do |iss|
-        Comment.where(issue_id: iss.id, author: @auto_tag_author.author_name ).each do |com|
-          Tag.create!(user_id: current_user.id, comment_id: com.id, content: @auto_tag_author.tag_content , auto_tag_author_id: @auto_tag_author.id)
-        end
+      
+      Comment.joins(:issue).where("issues.project_id": session[:project_id], "comments.author": @auto_tag_author.author_name).each do |com|
+        Tag.create!(user_id: current_user.id, comment_id: com.id, content: @auto_tag_author.tag_content , auto_tag_author_id: @auto_tag_author.id)
       end
+      
 
 
 
