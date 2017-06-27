@@ -54,9 +54,9 @@ class Comment < ApplicationRecord
     type_text == :other ? self.jira_id.to_s : "description"
   end
 
-  def set_tag(user)
+  def set_tag(user, project_id)
     unless type_text == :description
-      if AutoTagAuthor.exists?(author_name: self.author)
+      if AutoTagAuthor.exists?(author_name: self.author, project_id: project_id)
         #Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
         #auto_tag_authorテーブルにある場合その全てのタグを付ける
         AutoTagAuthor.where(author_name: self.author).each do |ata|
