@@ -25,13 +25,19 @@ class ProjectsController < ApplicationController
   # POST /projects.json
   def create
     @project = Project.new(project_params)
-    if Project.where(name: @project.name).empty?
-      @project.save
-      flash[:success] = "Projectを追加しました"
-      redirect_to projects_path
-    else
-      flash[:error] = "同名のProjectがすでに存在します"
+    if @project.name == ""
+      @project.delete
+      flash[:error] = "Project名を入力してください"
       redirect_to new_project_path
+    else
+      if Project.where(name: @project.name).empty?
+        @project.save
+        flash[:success] = "Projectを追加しました"
+        redirect_to projects_path
+      else
+        flash[:error] = "同名のProjectがすでに存在します"
+        redirect_to new_project_path
+      end
     end
   end
 
