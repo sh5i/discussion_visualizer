@@ -62,20 +62,19 @@ class Comment < ApplicationRecord
         AutoTagAuthor.where(author_name: self.author).each do |ata|
           Tag.create!(user_id: user.id, comment_id: self.id, content: ata.tag_content , auto_tag_author_id: ata.id)
         end
-      else
-        arr = self.content.to_s.split(/\s*(\.|\?|\;)\s*/)
-        array = arr.each_slice(2).to_a
-        array.each do |sentence|
-          s = Sanitize.clean(sentence[0].to_s).strip.downcase
-          if (s.start_with?("wh") || s.start_with?("how") )&& sentence[1] == "?"
-            return Tag.create!(user_id: user.id, comment_id: self.id, content: "question")
-          elsif sentence[0].include?("pre class=\"code-")
-            return Tag.create!(user_id: user.id, comment_id: self.id, content: "code")
-          # elsif !self.tfidf.empty?
-          #   self.tfidf.each do |key,val|
-          #     return self.label = :investigative if val > 0.3
-          #   end
-          end
+      end      
+      arr = self.content.to_s.split(/\s*(\.|\?|\;)\s*/)
+      array = arr.each_slice(2).to_a
+      array.each do |sentence|
+        s = Sanitize.clean(sentence[0].to_s).strip.downcase
+        if (s.start_with?("wh") || s.start_with?("how") )&& sentence[1] == "?"
+          return Tag.create!(user_id: user.id, comment_id: self.id, content: "question")
+        elsif sentence[0].include?("pre class=\"code-")
+          return Tag.create!(user_id: user.id, comment_id: self.id, content: "code")
+        # elsif !self.tfidf.empty?
+        #   self.tfidf.each do |key,val|
+        #     return self.label = :investigative if val > 0.3
+        #   end
         end
       end
     end
