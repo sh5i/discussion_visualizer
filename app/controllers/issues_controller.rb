@@ -12,7 +12,7 @@ class IssuesController < ApplicationController
   # GET /issues
   # GET /issues.json
   def index
-    if !params[:format]
+    if params[:format]
       session[:project_id] = params[:format]
     end
     @project = Project.find_by(id: session[:project_id])
