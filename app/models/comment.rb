@@ -54,25 +54,37 @@ class Comment < ApplicationRecord
     type_text == :other ? self.jira_id.to_s : "description"
   end
 
-  def set_tag(user)
+  def set_tag(user, project_id)
     unless type_text == :description
-      if PatchAuthor.exists?(name: self.author)
-        Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
-      else
-        arr = self.content.to_s.split(/\s*(\.|\?|\;)\s*/)
-        array = arr.each_slice(2).to_a
-        array.each do |sentence|
-          s = Sanitize.clean(sentence[0].to_s).strip.downcase
-          if (s.start_with?("wh") || s.start_with?("how") )&& sentence[1] == "?"
-            return Tag.create!(user_id: user.id, comment_id: self.id, content: "question")
-          elsif sentence[0].include?("pre class=\"code-")
-            return Tag.create!(user_id: user.id, comment_id: self.id, content: "code")
-          # elsif !self.tfidf.empty?
-          #   self.tfidf.each do |key,val|
-          #     return self.label = :investigative if val > 0.3
-          #   end
-          end
+      if AutoTagAuthor.exists?(author_name: self.author, project_id: project_id)
+        #Tag.create!(user_id: user.id, comment_id: self.id, content: "patch")
+        #auto_tag_authorテーブルにある場合その全てのタグを付ける
+        AutoTagAuthor.where(author_name: self.author).each do |ata|
+          Tag.create!(user_id: user.id, comment_id: self.id, content: ata.tag_content , auto_tag_author_id: ata.id)
         end
+      end      
+      arr = self.content.to_s.split(/\s*(\.|\?|\;)\s*/)
+      array = arr.each_slice(2).to_a
+      array.each do |sentence|
+        s = Sanitize.clean(sentence[0].to_s).strip.downcase
+        if (s.start_with?("wh") || s.start_with?("how") )&& sentence[1] == "?"
+          return Tag.create!(user_id: user.id, comment_id: self.id, content: "question")
+        elsif sentence[0].include?("pre class=\"code-")
+          return Tag.create!(user_id: user.id, comment_id: self.id, content: "code")
+        # elsif !self.tfidf.empty?
+        #   self.tfidf.each do |key,val|
+        #     return self.label = :investigative if val > 0.3
+        #   end
+        end
+      end
+    end
+  end
+#自動タグの更新。
+  def set_auto_tag(user , autoTag)
+    unless type_text == :description
+      if !Tag.exists?(comment_id: self.id, content: autoTag.tag_content)
+        Tag.create!(user_id: user.id, comment_id: self.id, content: autoTag.tag_content , auto_tag_author_id: autoTag.id)
+
       end
     end
   end

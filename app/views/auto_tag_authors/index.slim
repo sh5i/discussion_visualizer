@@ -1,0 +1,22 @@
+.container
+  .row
+    h1 自動タグ付け一覧
+    br
+    | ※ 自動タグ付けをするユーザー(DiscussionVisualizer上のコメントの発言者、もしくはJIRAのaタグ中のrel属性に相当)とそのタグ名を入力してください
+
+    .pull-right = link_to '新規作成', new_setting_path, class: 'btn btn-default'
+    .pull-right = link_to 'Issue一覧へ', issues_path, class: 'btn btn-default'
+
+  .row
+    table.table.table-striped 
+      thead
+        tr
+          th = '名前 (タグ名)'
+          th = '操作'
+      tbody
+      - @auto_tag_authors.each do |author|
+        tr
+          td.align-middle = author.author_name+" ("+author.tag_content+")"
+          td
+            = link_to '編集', edit_setting_path(author), class: 'btn btn-default'
+            = link_to '削除', setting_path(author), :method => :delete, class: 'btn btn-danger'

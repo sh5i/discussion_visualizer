@@ -1,5 +1,6 @@
 class Issue < ApplicationRecord
   validates_uniqueness_of :url
+  belongs_to :project
   has_many :comments
   has_many :edges, through: :comments
   has_many :tags, through: :comments

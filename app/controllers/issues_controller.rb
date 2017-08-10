@@ -12,8 +12,11 @@ class IssuesController < ApplicationController
   # GET /issues
   # GET /issues.json
   def index
-    @issues = Issue.belongs_user(current_user)
-    @issue = Issue.new
+    if params[:format]
+      session[:project_id] = params[:format]
+    end
+    @project = Project.find_by(id: session[:project_id])
+    @issues = Issue.where(project_id: @project)
   end
 
   # GET /issues/1
@@ -42,6 +45,16 @@ class IssuesController < ApplicationController
       doc = Nokogiri::XML(open(xml_url.join("/")))
 
       @issue.title = doc.xpath('rss/channel/item/title').text
+      _, @issue.name, project_name = *@issue.title.match(/\[((.*?)\-.*?)\]/)
+
+      @project = Project.find_by(name: project_name)
+      if @project.nil?
+        @project = Project.new(name: project_name)
+        @project.save
+      end
+      @issue.project = @project
+      session[:project_id] = @project.id
+      
       @issue.type_text = doc.xpath('rss/channel/item/type').text
 
       @duplicate_issue = Issue.find_by(url: @issue.url)
@@ -64,25 +77,9 @@ class IssuesController < ApplicationController
             flash[:error] = "課題の登録に失敗"
             render :new
         end
-      elsif Edge.where(comment_id: @duplicate_issue.comments).find_by(user_id: current_user).nil?
-        logger.error "----DUPLICATE----"
-        begin
-          ActiveRecord::Base.transaction do
-            create_edges(@duplicate_issue.comments, current_user)
-            create_svg(@duplicate_issue, current_user)
-          end
-            flash[:success] = "課題の登録に成功"
-            redirect_to @duplicate_issue
-          rescue => e
-            logger.error "----DUPLICATE_ERROR----"
-            logger.error e
-            logger.error "----DUPLICATE_ERROR----"
-            flash[:error] = "課題の登録に失敗"
-            render :new
-        end
       else
-        flash[:success] = "登録済みでした"
-        redirect_to Issue.find_by(url: @issue.url)
+        flash[:error] = "登録済みでした"
+        redirect_to new_issue_path
       end
     else
       flash[:error] = "JIRAのプロジェクトを指定してください"
@@ -110,7 +107,7 @@ class IssuesController < ApplicationController
   def destroy
     @issue.destroy
     respond_to do |format|
-      format.html { redirect_to issues_url, notice: 'Issue was successfully destroyed.' }
+      format.html { redirect_to issues_url, notice: 'Issueが削除されました' }
       format.json { head :no_content }
     end
   end
@@ -150,7 +147,7 @@ class IssuesController < ApplicationController
                                  jira_id: cmt.attribute("id"),
                                  internal_id: count )
           @comment.save!
-          @comment.set_tag(current_user)
+          @comment.set_tag(current_user, session[:project_id])
           count += 1
         end
 

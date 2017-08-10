@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PatchAuthorTest < ActiveSupport::TestCase
+class IssueRelationTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

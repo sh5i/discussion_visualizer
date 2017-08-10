@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  issue: one
+  target_issue_title: MyString
+  target_issue_name: MyString
+  type_text: MyString
+
+two:
+  issue: two
+  target_issue_title: MyString
+  target_issue_name: MyString
+  type_text: MyString

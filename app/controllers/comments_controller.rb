@@ -99,8 +99,13 @@ class CommentsController < ApplicationController
   end
 
   def tags
-    @tags = Tag.where(content: params[:tag], user_id: current_user.id)
-    @comments = Comment.where(id: @tags.pluck(:comment_id))
+    @tags = Tag.where(content: params[:tag])
+    #filterパラメータによってとってくるコメントを変える
+    if params[:filter] == "normal"
+      @comments = Comment.where(id: @tags.pluck(:comment_id))
+    else
+      @comments = Comment.where.not(id: @tags.pluck(:comment_id))
+    end
     render json: {tags: @tags, comments: @comments}
   end
 

@@ -5,6 +5,8 @@ nav.header-top.navbar.navbar-fixed-top.navbar-default role="navigation"
         = link_to 'Discussion Visualizer', root_path,  class: "navbar-brand"
 
     - if user_signed_in?
+      ul.nav.navbar-nav.nav-list.username-vcenter
+        |#{current_user.username}さんのページ
       ul.nav.navbar-nav.nav-list.navbar-right
         li = link_to destroy_user_session_path, method: :delete do
           span == material_icon.exit_to_app

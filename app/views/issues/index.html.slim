@@ -1,12 +1,16 @@
 .container
   .row
-    h1 Issue一覧
+    h1 = "Project名: "+"#{@project.name}"
+    br
+    h2 Issue一覧
 
   .row
     ul
       - @issues.each do |issue|
         li = link_to "#{issue.title}", issue
-
+        = link_to '削除', issue, data: { confirm: '本当に削除しても良いですか？' }, method: :delete
     br
 
     = link_to '新規Issue作成', new_issue_path
+    br
+    = link_to '自動タグ付け登録', settings_path

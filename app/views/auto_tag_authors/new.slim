@@ -6,9 +6,11 @@
     | ※ 機械記述者のuser名を記入してください(aタグ中のrel属性に相当します)
 
   .row
-    = form_for @patch_author, :url => {:action => :create} do |f|
+    = form_for @auto_tag_author, :url => {:action => :create} do |f|
       .field
-        = f.label :name, "名前"
-        = f.text_field :name
+        = f.label :author_name, "名前"
+        = f.text_field :author_name
+        = f.label :tag_content, "タグ"
+        = f.text_field :tag_content
       .submit
         = f.submit class: 'btn btn-primary'

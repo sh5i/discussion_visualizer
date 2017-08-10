@@ -1,6 +1,36 @@
+
 $ ->
+  get_comment_from_server = () ->
+    filter = $('input[name="filter_status"]:checked').val()
+    # ラジオボタン選択時にサーバーと通信してtag検索を行う
+    $("g.node.same-tag").each( -> $(this).removeClass("same-tag"))
+    checked_arr = []
+    $('input[name="tag"]:checked').each ->
+        checked_arr.push($(this).val())
+    path = "/comments/tags?"
+    path += "filter="+filter+"&" 
+    for tag in checked_arr
+      path += "tag[]="+tag+"&"
+    path = path.slice(0,-1)
+    if path
+      $.ajax(
+        method: 'GET'
+        url: path
+      ).done( (res) ->
+        $(".comments_area .comment").each( -> $(this).hide("fast"))
+        for comment in res["comments"]
+          $("svg g g##{comment['jira_id']}").addClass("same-tag")
+          $(".comments_area .comment##{'comment-' + comment['jira_id']}").show("fast")
+      ).fail( ( jqXHR, textStatus ) ->
+        # TODO Error Handling
+      )
+
   is_checked = $('input[name="tag"]:checked').val()
-  $(document).on 'click' ,'input[name="tag"]:radio', ->
+  checked_arr = []
+  $('input[name="tag"]:checked').each ->
+      checked_arr.push($(this).val())
+  #todo:解除時の挙動
+  $(document).on 'click' ,'input[name="tag"]', ->
     if $(this).val() == is_checked
       # ラジオボタンを解除する
       $('input[name="tag"]').prop('checked', false)
@@ -9,22 +39,7 @@ $ ->
       $("g.node.same-tag").each( -> $(this).removeClass("same-tag"))
       $(".comments_area .comment").each( -> $(this).show("fast"))
     else
-      is_checked = $(this).val()
+      get_comment_from_server()
 
-      # ラジオボタン選択時にサーバーと通信してtag検索を行う
-      $("g.node.same-tag").each( -> $(this).removeClass("same-tag"))
-      tag = $(this).val()
-      path = "/comments/tags?"+"tag="+tag
-      if path
-        $.ajax(
-          method: 'GET'
-          url: path
-        ).done( (res) ->
-          $(".comments_area .comment").each( -> $(this).hide("fast"))
-          for comment in res["comments"]
-            $("svg g g##{comment['jira_id']}").addClass("same-tag")
-            $(".comments_area .comment##{'comment-' + comment['jira_id']}").show("fast")
-        ).fail( ( jqXHR, textStatus ) ->
-          # TODO Error Handling
-          # console.log( "Request failed: " + textStatus)
-        )
+  $(document).on 'click' ,'input[name="filter_status"]', ->
+    get_comment_from_server()
